@@ -24,14 +24,25 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    axios.post('http://localhost:3001/persons', newPerson).then(
-      response => {
-        setPersons(persons.concat(response.data))
-        setNewName("")
-        setNewNumber("")
-      }
-    )
-  }
+    const findPerson = persons.find(person => person.name === newName)
+    if (findPerson) {
+      axios.put(`http://localhost:3001/persons/${findPerson.id}`, newPerson).then(
+        response => {
+          setPersons(persons.map(person => person.id !== findPerson.id ? person : response.data))
+          setNewName("")
+          setNewName("")
+        }
+      )
+    } else{
+      axios.post('http://localhost:3001/persons', newPerson).then(
+        response => {
+          setPersons(persons.concat(response.data))
+          setNewName("")
+          setNewNumber("")
+        }
+      )
+    }
+    }
 
   const handleChange = (setValue) => (event) => setValue(event.target.value)
 
