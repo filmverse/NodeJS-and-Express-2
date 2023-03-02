@@ -30,7 +30,7 @@ const App = () => {
         response => {
           setPersons(persons.map(person => person.id !== findPerson.id ? person : response.data))
           setNewName("")
-          setNewName("")
+          setNewNumber("")
         }
       )
     } else{
