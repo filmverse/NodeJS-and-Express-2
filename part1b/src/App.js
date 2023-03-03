@@ -7,6 +7,7 @@ const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState("")
   const [newNumber, setNewNumber] = useState("")
+  const [query, setQuery] = useState("")
 
   const hook = () => {
     axios.get('http://localhost:3001/persons').then(
@@ -44,20 +45,30 @@ const App = () => {
     }
     }
 
+    const removePerson = (id) => () => {
+      axios.delete(`http://localhost:3001/persons/${id}`).then(
+        () => {
+          setPersons(persons.filter(person => person.id !== id))
+        }
+      )
+    }
+
   const handleChange = (setValue) => (event) => setValue(event.target.value)
 
   return (
     <div>
       <h1>Phonebook</h1>
+      filter shown with: <input value={query} onChange={handleChange(setQuery)} />
       <h3>add a new</h3>
       <form onSubmit={addPerson}>
         name:<input value={newName} onChange={handleChange(setNewName)} /><br />
         number:<input value={newNumber} onChange={handleChange(setNewNumber)} /><br />
         <button type='submit'>add</button>
       </form>
-      {persons.map(person => <Person key={person.id} person={person} />)}
+      {persons.filter(person => person.name.toLowerCase().includes(query)).map(person => <Person key={person.id} person={person} removePerson={removePerson} />)}
       debuging name: {newName}<br />
-      debuging number: {newNumber}
+      debuging number: {newNumber}<br />
+      debuging query: {query}
     </div>
   )
 }
