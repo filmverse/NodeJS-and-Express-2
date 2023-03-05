@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import Book from './services/Book';
 import Person from './components/Person';
 
 const App = () => {
@@ -10,7 +10,7 @@ const App = () => {
   const [query, setQuery] = useState("")
 
   const hook = () => {
-    axios.get('http://localhost:3001/persons').then(
+    Book.getAll().then(
       response => {
         console.log(response.data)
         setPersons(response.data)
@@ -27,7 +27,7 @@ const App = () => {
     }
     const findPerson = persons.find(person => person.name === newName)
     if (findPerson) {
-      axios.put(`http://localhost:3001/persons/${findPerson.id}`, newPerson).then(
+      Book.update(findPerson.id, newPerson).then(
         response => {
           setPersons(persons.map(person => person.id !== findPerson.id ? person : response.data))
           setNewName("")
@@ -35,7 +35,7 @@ const App = () => {
         }
       )
     } else{
-      axios.post('http://localhost:3001/persons', newPerson).then(
+      Book.create(newPerson).then(
         response => {
           setPersons(persons.concat(response.data))
           setNewName("")
@@ -46,14 +46,14 @@ const App = () => {
     }
 
     const removePerson = (id) => () => {
-      axios.delete(`http://localhost:3001/persons/${id}`).then(
+      Book.remove(id).then(
         () => {
           setPersons(persons.filter(person => person.id !== id))
         }
       )
     }
 
-  const handleChange = (setValue) => (event) => setValue(event.target.value)
+  const handleChange = (setValue) => (event) => setValue(event.target.value.toLowerCase())
 
   return (
     <div>
