@@ -22,13 +22,8 @@
     },
     {
       "name": "testing",
-      "number": "987654321098",
+      "number": "123-456789",
       "id": 5
-    },
-    {
-      "name": "testing again",
-      "number": "123456789012",
-      "id": 6
     }
   ]
 }

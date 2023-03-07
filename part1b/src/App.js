@@ -13,7 +13,6 @@ const App = () => {
   const hook = () => {
     Book.getAll().then(
       response => {
-        console.log(response.data)
         setPersons(response.data)
       }
     )
@@ -68,7 +67,12 @@ const App = () => {
         changeName={handleChange(setNewName)}
         changeNumber={handleChange(setNewNumber)}
       />
-      {persons.filter(person => person.name.toLowerCase().includes(query)).map(person => <Person key={person.id} person={person} removePerson={removePerson} />)}
+      <Person
+        persons={persons}
+        removePerson={removePerson}
+        query={query}
+      />
+
       debuging name: {newName}<br />
       debuging number: {newNumber}<br />
       debuging query: {query}
