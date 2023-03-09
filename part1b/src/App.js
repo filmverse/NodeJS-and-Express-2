@@ -25,7 +25,7 @@ const App = () => {
       name: newName,
       number: newNumber
     }
-    const findPerson = persons.find(person => person.name === newName)
+    const findPerson = persons.find(person => person.name.toLowerCase() === newName.toLowerCase())
     if (findPerson) {
       Book.update(findPerson.id, newPerson).then(
         response => {
@@ -45,15 +45,18 @@ const App = () => {
     }
     }
 
-    const removePerson = (id) => () => {
+    const removePerson = (id, name) => () => {
       Book.remove(id).then(
         () => {
           setPersons(persons.filter(person => person.id !== id))
         }
-      )
+      ).catch(error => {
+        alert(`"${name}" was already removed from the server`)
+        setPersons(persons.filter(person => person.id !== id))
+      })
     }
 
-  const handleChange = (setValue) => (event) => setValue(event.target.value.toLowerCase())
+  const handleChange = (setValue) => (event) => setValue(event.target.value)
 
   return (
     <div>
