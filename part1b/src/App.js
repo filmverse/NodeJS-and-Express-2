@@ -27,13 +27,15 @@ const App = () => {
     }
     const findPerson = persons.find(person => person.name.toLowerCase() === newName.toLowerCase())
     if (findPerson) {
-      Book.update(findPerson.id, newPerson).then(
-        response => {
-          setPersons(persons.map(person => person.id !== findPerson.id ? person : response.data))
-          setNewName("")
-          setNewNumber("")
-        }
-      )
+      if (window.confirm(`"${newName}" is already added to phonebook, replace the old number with a new one ?`)) {
+        Book.update(findPerson.id, newPerson).then(
+          response => {
+            setPersons(persons.map(person => person.id !== findPerson.id ? person : response.data))
+            setNewName("")
+            setNewNumber("")
+          }
+        )
+      }
     } else{
       Book.create(newPerson).then(
         response => {
@@ -46,14 +48,16 @@ const App = () => {
     }
 
     const removePerson = (id, name) => () => {
-      Book.remove(id).then(
-        () => {
+      if (window.confirm(`Delete "${name}"?`)) {
+        Book.remove(id).then(
+          () => {
+            setPersons(persons.filter(person => person.id !== id))
+          }
+        ).catch(error => {
+          alert(`"${name}" was already removed from the server`)
           setPersons(persons.filter(person => person.id !== id))
-        }
-      ).catch(error => {
-        alert(`"${name}" was already removed from the server`)
-        setPersons(persons.filter(person => person.id !== id))
-      })
+        })
+      }
     }
 
   const handleChange = (setValue) => (event) => setValue(event.target.value)
@@ -62,7 +66,7 @@ const App = () => {
     <div>
       <h1>Phonebook</h1>
       filter shown with: <input value={query} onChange={handleChange(setQuery)} />
-      <h3>add a new</h3>
+      <p>add a new</p>
       <PersonForm
         addPerson={addPerson}
         name={newName}
