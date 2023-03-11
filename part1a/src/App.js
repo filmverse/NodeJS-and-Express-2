@@ -37,6 +37,16 @@ const App = () => {
     ? notes
     : notes.filter(note => note.important === true)
 
+  const toggleImportant = (id) => () => {
+    const note = notes.find(n => n.id === id)
+    const changeNote = {...note, important: !note.important}
+    axios.put(`http://localhost:3001/notes/${id}`, changeNote).then(
+      response => {
+        setNotes(notes.map(note => note.id !== id ? note : response.data))
+      }
+    )
+  }
+
   const removeNote = (id) => () => {
     axios.delete(`http://localhost:3001/notes/${id}`).then(
       () => {
@@ -53,7 +63,7 @@ const App = () => {
       <button onClick={() => setShowAll(!showAll)}>
         show {showAll ? 'important' : 'all'}
       </button>
-      <Note notes={noteToShow} removeNote={removeNote} />
+      <Note notes={noteToShow} removeNote={removeNote} toggleImportant={toggleImportant} />
       <NoteForm
         addNote={addNote}
         newNote={newNote}
