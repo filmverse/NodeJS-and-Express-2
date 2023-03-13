@@ -8,7 +8,7 @@ const Note = ({ notes, removeNote, toggleImportant }) => {
         <div>
             {notes.map(note =>
                 <ul key={note.id}>
-                    <li>{note.content} <button onClick={toggleImportant(note.id)}>{label(note)}</button><button onClick={removeNote(note.id)}>delete?</button></li>
+                    <li>{note.content} <button onClick={toggleImportant(note.id)}>{label(note)}</button><button onClick={removeNote(note.id)}>delete</button></li>
                 </ul>
             )}
         </div>

@@ -8,6 +8,7 @@ const App = () => {
   const [ notes, setNotes ] = useState([])
   const [ newNote, setNewNote ] = useState("")
   const [ showAll, setShowAll ] = useState(true)
+  const [ errorMessage, setErrorMessage ] = useState("Testing")
 
   const hook = () => {
     axios.get('http://localhost:3001/notes').then(
@@ -57,9 +58,21 @@ const App = () => {
 
   const handleChange = (setValue) => (event) => {setValue(event.target.value)}
 
+  const Notification = ({ message }) => {
+    if (message === null) {
+      return null
+    }
+    return (
+      <div className="error">
+        {message}
+      </div>
+    )
+  }
+
   return (
     <div>
       <h1>Notes</h1>
+      <Notification message={errorMessage} />
       <button onClick={() => setShowAll(!showAll)}>
         show {showAll ? 'important' : 'all'}
       </button>
