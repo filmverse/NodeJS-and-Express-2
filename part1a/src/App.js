@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import noteApp from "./services/notes";
 import Note from "./components/Note";
 import NoteForm from "./components/NoteForm";
 
@@ -12,7 +13,7 @@ const App = () => {
   const [ successMessage, setSuccessMessage ] = useState(null)
 
   const hook = () => {
-    axios.get('http://localhost:3001/notes').then(
+    noteApp.getAll().then(
       response => {
         console.log(response.data)
         setNotes(response.data)
@@ -27,7 +28,7 @@ const App = () => {
       content: newNote,
       important: Math.random() < 0.5,
     }
-    axios.post('http://localhost:3001/notes', noteAdd).then(
+    noteApp.create(noteAdd).then(
       response => {
         setNotes(notes.concat(response.data))
         setNewNote("")
