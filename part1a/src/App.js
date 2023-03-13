@@ -8,7 +8,7 @@ const App = () => {
   const [ notes, setNotes ] = useState([])
   const [ newNote, setNewNote ] = useState("")
   const [ showAll, setShowAll ] = useState(true)
-  const [ errorMessage, setErrorMessage ] = useState("Testing")
+  const [ errorMessage, setErrorMessage ] = useState(null)
 
   const hook = () => {
     axios.get('http://localhost:3001/notes').then(
@@ -46,12 +46,30 @@ const App = () => {
         setNotes(notes.map(note => note.id !== id ? note : response.data))
       }
     )
+    .catch(
+      error => {
+        setErrorMessage(`Note ${note.content} was already removed from the server`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+        setNotes(notes.filter(n => n.id !== id))
+      }
+    )
   }
 
   const removeNote = (id) => () => {
     axios.delete(`http://localhost:3001/notes/${id}`).then(
       () => {
         setNotes(notes.filter(note => note.id !== id))
+      }
+    )
+    .catch(
+      error => {
+        setErrorMessage(`Note of ID ${id} was already removed from the server`)
+        setTimeout(() => {
+          setErrorMessage(null)
+        }, 5000)
+        setNotes(notes.filter(n => n.id !== id))
       }
     )
   }
