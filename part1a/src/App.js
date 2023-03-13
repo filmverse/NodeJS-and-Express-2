@@ -9,6 +9,7 @@ const App = () => {
   const [ newNote, setNewNote ] = useState("")
   const [ showAll, setShowAll ] = useState(true)
   const [ errorMessage, setErrorMessage ] = useState(null)
+  const [ successMessage, setSuccessMessage ] = useState(null)
 
   const hook = () => {
     axios.get('http://localhost:3001/notes').then(
@@ -30,6 +31,10 @@ const App = () => {
       response => {
         setNotes(notes.concat(response.data))
         setNewNote("")
+        setSuccessMessage(`Note: "${noteAdd.content}" is added`)
+        setTimeout(() => {
+          setSuccessMessage(null)
+        }, 5000)
       }
     )
   }
@@ -76,7 +81,7 @@ const App = () => {
 
   const handleChange = (setValue) => (event) => {setValue(event.target.value)}
 
-  const Notification = ({ message }) => {
+  const FailedNotification = ({ message }) => {
     if (message === null) {
       return null
     }
@@ -87,10 +92,22 @@ const App = () => {
     )
   }
 
+  const SuccessNotification = ({ message }) => {
+    if (message === null) {
+      return null
+    }
+    return (
+      <div className="success">
+        {message}
+      </div>
+    )
+  }
+
   return (
     <div>
       <h1>Notes</h1>
-      <Notification message={errorMessage} />
+      <FailedNotification message={errorMessage} />
+      <SuccessNotification message={successMessage} />
       <button onClick={() => setShowAll(!showAll)}>
         show {showAll ? 'important' : 'all'}
       </button>
