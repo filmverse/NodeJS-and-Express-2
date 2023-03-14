@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Details from "./components/Details";
 
 const baseUrl = "https://restcountries.com/v3.1/all"
 
@@ -10,8 +11,16 @@ const App = () => {
   const hook = () => {
     axios.get(baseUrl).then(
       response => {
-        console.log(response.data)
-        setCountries(response.data)
+        setCountries(response.data.map(
+          country => ({
+            name: country.name.common,
+            capital: country.capital,
+            area: country.area,
+            language: country.languages,
+            flag: country.flag,
+            flags: country.flags
+          })
+        ))
       }
     )
   }
@@ -19,7 +28,7 @@ const App = () => {
 
   return (
     <div>
-      Hello World
+      <Details countries={countries} />
     </div>
   )
 }
