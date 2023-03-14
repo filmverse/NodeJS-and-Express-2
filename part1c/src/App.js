@@ -11,6 +11,7 @@ const App = () => {
   const hook = () => {
     axios.get(baseUrl).then(
       response => {
+        console.log(response.data);
         setCountries(response.data.map(
           country => ({
             name: country.name.common,

@@ -6,9 +6,12 @@ const Details = ({ countries }) => {
                     <h2>{country.name}</h2>
                     <h4>{country.capital}</h4>
                     <h4>{country.area}</h4>
-                    {/* <ul>{Object.values(country.language).map(
-                        lang => <li key={lang}>{lang}</li>
-                    )}</ul> */}
+                    {/* <ul>
+                        {Object.values(country.language).map(
+                            language => <li key={language}>{language}</li>
+                        )}
+                    </ul> */}
+                    <img src={country.flags.png} alt={`${country.name} flag`} />
                 </div>
             )}
         </div>
