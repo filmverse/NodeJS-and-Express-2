@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Details from "./components/Details";
+import Detail from "./components/Detail";
 
 const baseUrl = "https://restcountries.com/v3.1/all"
 
@@ -12,7 +13,6 @@ const App = () => {
   const hook = () => {
     axios.get(baseUrl).then(
       response => {
-        console.log(response.data);
         setCountries(response.data.map(
           country => ({
             name: country.name.common,
@@ -28,11 +28,26 @@ const App = () => {
   }
   useEffect(hook, [])
 
+  const filterCountry = countries.filter(
+    country => country.name.toLowerCase().includes(query.toLowerCase())
+  )
+
   const handleChange = (setValue) => (event) => {setValue(event.target.value)}
 
   return (
     <div>
-      Find Country<input value={query} onChange={handleChange(setQuery)} />
+      <p>Find Country<input value={query} onChange={handleChange(setQuery)} /></p>
+      {filterCountry.length > 10 && (
+        <p>Too many matches, Specify another filter</p>
+      )}
+      {filterCountry.length <= 10 && filterCountry.length > 1 && filterCountry.map(fcountry => (
+        <ul key={fcountry.name}>
+          <li>{fcountry.name}</li>
+        </ul>
+      ))}
+      {filterCountry.length === 1 && (
+        <Detail country={filterCountry[0]} />
+      )}
       <Details countries={countries} />
     </div>
   )
