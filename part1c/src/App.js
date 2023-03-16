@@ -9,6 +9,7 @@ const App = () => {
 
   const [ countries, setCountries ] = useState([])
   const [ query, setQuery ] = useState("")
+  const [ viewCountry, setViewCountry ] = useState({})
 
   const hook = () => {
     axios.get(baseUrl).then(
@@ -32,7 +33,14 @@ const App = () => {
     country => country.name.toLowerCase().includes(query.toLowerCase())
   )
 
-  const handleChange = (setValue) => (event) => {setValue(event.target.value)}
+  const handleChange = (setValue) => (event) => {
+    setValue(event.target.value)
+    setViewCountry({})
+  }
+
+  const handleShow = (name) => () => {
+    setViewCountry(filterCountry.filter(country => country.name.includes(name))[0])
+  }
 
   return (
     <div>
@@ -42,11 +50,14 @@ const App = () => {
       )}
       {filterCountry.length <= 10 && filterCountry.length > 1 && filterCountry.map(fcountry => (
         <ul key={fcountry.name}>
-          <li>{fcountry.name}</li>
+          <li>{fcountry.name} <button onClick={handleShow(fcountry.name)}>show</button></li>
         </ul>
       ))}
       {filterCountry.length === 1 && (
         <Detail country={filterCountry[0]} />
+      )}
+      {viewCountry.name && (
+        <Detail country={viewCountry} />
       )}
       <Details countries={countries} />
     </div>
