@@ -7,14 +7,14 @@ const Details = ({ countries }) => {
                     <li>capital: {country.capital}</li>
                     <li>area: {country.area}</li>
                     <li>
-                        languages:
-                        {country.language
-                            ? Object.values(country.language).map(lang => (
-                                <option key={lang}>{lang}</option>
-                            ))
-                            : "N/A"}
+                        languages: {
+                            country.language
+                                ? Object.values(country.language).map(
+                                    lang => <option key={lang}>{lang}</option>
+                                )
+                                : "N/A"
+                        }
                     </li>
-
                     <li>flag: {country.flag}</li>
                 </ul>
             ))}
