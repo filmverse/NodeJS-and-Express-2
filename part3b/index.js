@@ -56,13 +56,24 @@ const generateId = () => Math.floor(Math.random() * (1000000 - 4 + 1) + 4)
 
 app.post('/api/persons', (request, response) => {
     const body = request.body
-    const person = {
-        name: body.name,
-        number: body.number,
-        id: generateId(),
+    const findPerson = persons.find(person => person.name === body.name)
+    if (!body.name || !body.number) {
+        response.status(400).json({
+            error: 'The name or number is missing'
+        })
+    } else if (findPerson) {
+        response.status(400).json({
+            error: 'name must be unique'
+        })
+    } else {
+        const person = {
+            name: body.name,
+            number: body.number,
+            id: generateId(),
+        }
+        persons = persons.concat(person)
+        response.json(person)
     }
-    persons = persons.concat(person)
-    response.json(person)
 })
 
 const PORT = 3001
