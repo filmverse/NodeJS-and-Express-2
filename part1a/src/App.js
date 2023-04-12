@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import noteApp from "./services/notes";
 import Note from "./components/Note";
 import NoteForm from "./components/NoteForm";
@@ -47,7 +46,7 @@ const App = () => {
   const toggleImportant = (id) => () => {
     const note = notes.find(n => n.id === id)
     const changeNote = {...note, important: !note.important}
-    axios.put(`http://localhost:3001/notes/${id}`, changeNote).then(
+    noteApp.update(id, changeNote).then(
       response => {
         setNotes(notes.map(note => note.id !== id ? note : response.data))
       }
@@ -64,7 +63,7 @@ const App = () => {
   }
 
   const removeNote = (id) => () => {
-    axios.delete(`http://localhost:3001/notes/${id}`).then(
+    noteApp.remove(id).then(
       () => {
         setNotes(notes.filter(note => note.id !== id))
       }

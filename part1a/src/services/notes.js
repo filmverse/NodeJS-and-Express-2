@@ -9,12 +9,14 @@ const create = (noteAdd) => {
     return axios.post(baseURL, noteAdd)
 }
 
-const update = () => {}
-
-const remove = (id) => {
-    return axios.delete(`baseURL/${id}`)
+const update = (id, noteUpdate) => {
+    return axios.put(`${baseURL}/${id}`, noteUpdate)
 }
 
-const noteApp = {getAll, create, remove}
+const remove = (id) => {
+    return axios.delete(`${baseURL}/${id}`)
+}
+
+const noteApp = {getAll, create, update, remove}
 
 export default noteApp;
