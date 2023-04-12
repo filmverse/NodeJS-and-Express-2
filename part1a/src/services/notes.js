@@ -1,20 +1,20 @@
 import axios from "axios";
-const baseURL = '/api/notes'
+const baseUrl = '/api/notes'
 
 const getAll = () => {
-    return axios.get(baseURL)
+    return axios.get(baseUrl)
 }
 
 const create = (noteAdd) => {
-    return axios.post(baseURL, noteAdd)
+    return axios.post(baseUrl, noteAdd)
 }
 
 const update = (id, noteUpdate) => {
-    return axios.put(`${baseURL}/${id}`, noteUpdate)
+    return axios.put(`${baseUrl}/${id}`, noteUpdate)
 }
 
 const remove = (id) => {
-    return axios.delete(`${baseURL}/${id}`)
+    return axios.delete(`${baseUrl}/${id}`)
 }
 
 const noteApp = {getAll, create, update, remove}
