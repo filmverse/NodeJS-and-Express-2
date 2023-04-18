@@ -18,3 +18,13 @@ const phonebookSchema = new mongoose.Schema({
 })
 
 const Phonebook = mongoose.model("Phonebook", phonebookSchema)
+
+const contact = new Phonebook({
+    name: "new name",
+    number: 987654321012,
+})
+
+contact.save().then(result => {
+    console.log(`added ${contact.name} ${contact.number} to phonebook`)
+    mongoose.connection.close()
+})
