@@ -19,12 +19,21 @@ const phonebookSchema = new mongoose.Schema({
 
 const Phonebook = mongoose.model("Phonebook", phonebookSchema)
 
-const contact = new Phonebook({
-    name: process.argv[3],
-    number: process.argv[4],
-})
+// const contact = new Phonebook({
+//     name: process.argv[3],
+//     number: process.argv[4],
+// })
 
-contact.save().then(result => {
-    console.log(`added ${contact.name} number ${contact.number} to phonebook`)
+// contact.save().then(result => {
+//     console.log(`added ${contact.name} number ${contact.number} to phonebook`)
+//     mongoose.connection.close()
+// })
+
+
+Phonebook.find({}).then(result => {
+    console.log('Phonebook:')
+    result.forEach(contact => {
+        console.log(`${contact.name} ${contact.number}`)
+    })
     mongoose.connection.close()
 })
