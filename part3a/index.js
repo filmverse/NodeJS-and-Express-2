@@ -1,6 +1,6 @@
 const express = require('express')
 const cors = require('cors')
-const mongoose = require('mongoose')
+const Note = require('./models/note')
 
 const app = express()
 const unknownEndpoint = (request, response) => {
@@ -13,25 +13,6 @@ app.use(cors())
 app.use(express.static('build'))
 app.use(express.json())
 
-
-if (process.argv.length < 3) {
-    console.log('give password as argument')
-    process.exit(1)
-}
-
-const password = process.argv[2]
-
-const url = `mongodb+srv://vkassharma19492:${password}@cluster0.u2locne.mongodb.net/noteApp?retryWrites=true&w=majority`
-
-mongoose.set('strictQuery', false)
-mongoose.connect(url)
-
-const noteSchema = new mongoose.Schema({
-    content: String,
-    important: Boolean,
-})
-
-const Note = mongoose.model('Note', noteSchema)
 
 // let notes = [
 //     {
