@@ -36,28 +36,27 @@ app.delete('/api/notes/:id', (request, response) => {
     response.status(204).end()
 })
 
-const genereteId = () => {
-    const maxId = notes.length > 0
-        ? Math.max(...notes.map(note => note.id))
-        : 0
-    return maxId + 1
-}
+// const genereteId = () => {
+//     const maxId = notes.length > 0
+//         ? Math.max(...notes.map(note => note.id))
+//         : 0
+//     return maxId + 1
+// }
 
 app.post('/api/notes', (request, response) => {
     const body = request.body
-    if (!body.content) {
+    if (body.content === undefined) {
         return response.status(400).json({
             error: "content missing"
         })
-    } else {
-        const note = {
-            content: body.content,
-            important: body.important || false,
-            id: genereteId(),
-        }
-        notes = notes.concat(note)
-        response.json(note)
     }
+    const note = new Note({
+        content: body.content,
+        important: body.important || false,
+    })
+    note.save().then(savedNote => {
+        response.json(savedNote)
+    })
 })
 
 app.use(unknownEndpoint)
