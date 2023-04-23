@@ -14,3 +14,12 @@ Content-Type: application/json
     "content": "VS code rest client is a preety handy tool",
     "important": true
 }
+
+###
+PUT http://localhost:3001/api/notes/6445a6e6cc95dfa2c250006d
+Content-Type: application/json
+
+{
+    "content": "VS code rest client is an awesome tool",
+    "important": true
+}
