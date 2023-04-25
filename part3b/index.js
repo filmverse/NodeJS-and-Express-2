@@ -56,17 +56,9 @@ app.delete('/api/persons/:id', (request, response, next) => {
 
 app.post('/api/persons', (request, response, next) => {
     const body = request.body
-    pname = body.name
 
     if (body.name === undefined || body.number === undefined) {
         return response.status(400).json({error: "name or number is missing"})
-    }
-
-    const duplicatePerson = Person.findOne({ name: pname });
-    if (duplicatePerson) {
-        return response.status(400).json({
-            error: `${pname} already exists in the database`,
-        });
     }
 
     const person = new Person({
@@ -74,8 +66,14 @@ app.post('/api/persons', (request, response, next) => {
         number: body.number,
     })
 
-    person.save().then(savedPerson => {
-        response.json(savedPerson)
+    Person.findOne({ name: body.name }).then((result) => {
+        if (result) {
+            return response.status(400).json({ error: `${body.name} already exists in the database` })
+        } else {
+            person.save().then(savedPerson => {
+                response.json(savedPerson)
+            }).catch(error => next(error))
+        }
     }).catch(error => next(error))
 })
 
