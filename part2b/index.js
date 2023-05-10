@@ -75,7 +75,7 @@ const generateId = () => Math.floor(Math.random() * (1000000 - 4 + 1) + 4)
 
 app.post('/api/persons', (request, response) => {
     const body = request.body
-    const findPerson = persons.find(person => person.name === request.body.name)
+    const findPerson = persons.find(person => person.name.toLowerCase() === request.body.name?.toLowerCase())
     if (!body.name || !body.number) {
         response.status(400).json({
             error: "The name or number is missing"
